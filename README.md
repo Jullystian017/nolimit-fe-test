@@ -38,6 +38,12 @@ Data populasi diintegrasikan secara langsung menggunakan REST API dari **World B
 
 ---
 
+## 📸 Screenshot / Preview
+
+![Preview](./preview.png)
+
+---
+
 ## 🛠️ Tech Stack
 
 * **Core Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
