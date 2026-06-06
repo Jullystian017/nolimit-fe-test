@@ -29,19 +29,42 @@ interface Props {
   data: PopulationData[];
 }
 
+const crosshairPlugin = {
+  id: 'crosshair',
+  afterDraw: (chart: any) => {
+    if (chart.tooltip?._active?.length) {
+      const activePoint = chart.tooltip._active[0];
+      const ctx = chart.ctx;
+      const x = activePoint.element.x;
+      const topY = chart.scales.y.top;
+      const bottomY = chart.scales.y.bottom;
+      
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, topY);
+      ctx.lineTo(x, bottomY);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#94a3b8'; // slate-400
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+};
+
 export default function PopulationLineChart({ data }: Props) {
   const chartData = {
     labels: data.map(item => item.date),
     datasets: [
       {
-        label: 'US Population',
+        label: 'Populasi AS',
         data: data.map(item => item.value),
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        pointBackgroundColor: '#8b5cf6',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#8b5cf6',
+        borderColor: '#2563eb', // blue-600
+        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+        pointBackgroundColor: '#2563eb',
+        pointBorderColor: '#ffffff',
+        pointHoverBackgroundColor: '#ffffff',
+        pointHoverBorderColor: '#2563eb',
         fill: true,
         tension: 0.4,
       },
@@ -51,11 +74,15 @@ export default function PopulationLineChart({ data }: Props) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
     plugins: {
       legend: {
         position: 'top' as const,
         labels: {
-          color: '#f8fafc',
+          color: '#334155', // slate-700
           font: {
             family: "'Inter', sans-serif",
             size: 14
@@ -63,9 +90,9 @@ export default function PopulationLineChart({ data }: Props) {
         }
       },
       title: {
-        display: true,
-        text: 'US Population Growth (Line Chart)',
-        color: '#f8fafc',
+        display: false,
+        text: 'Pertumbuhan Populasi AS (Line Chart)',
+        color: '#0f172a', // slate-900
         font: {
           family: "'Inter', sans-serif",
           size: 16,
@@ -73,10 +100,10 @@ export default function PopulationLineChart({ data }: Props) {
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(30, 41, 59, 0.9)',
+        backgroundColor: 'rgba(15, 23, 42, 0.9)', // slate-900
         titleColor: '#f8fafc',
         bodyColor: '#e2e8f0',
-        borderColor: '#334155',
+        borderColor: '#e2e8f0',
         borderWidth: 1,
         padding: 12,
         callbacks: {
@@ -96,7 +123,7 @@ export default function PopulationLineChart({ data }: Props) {
     scales: {
       y: {
         ticks: {
-          color: '#94a3b8',
+          color: '#64748b', // slate-500
           callback: function(value: any) {
             return new Intl.NumberFormat('en-US', {
               notation: "compact",
@@ -105,19 +132,19 @@ export default function PopulationLineChart({ data }: Props) {
           }
         },
         grid: {
-          color: 'rgba(255, 255, 255, 0.05)',
+          color: '#f1f5f9', // slate-100
         }
       },
       x: {
         ticks: {
-          color: '#94a3b8',
+          color: '#64748b', // slate-500
         },
         grid: {
-          color: 'rgba(255, 255, 255, 0.05)',
+          color: '#f1f5f9', // slate-100
         }
       }
     }
   };
 
-  return <Line data={chartData} options={options} />;
+  return <Line data={chartData} options={options} plugins={[crosshairPlugin]} />;
 }

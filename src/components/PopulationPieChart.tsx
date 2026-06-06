@@ -16,16 +16,20 @@ interface Props {
   data: PopulationData[];
 }
 
-// Generate beautiful, vibrant colors for the pie chart
+// Generate beautiful, high-contrast vibrant colors for the pie chart
 const PIE_COLORS = [
-  '#3b82f6', // blue
-  '#8b5cf6', // purple
-  '#ec4899', // pink
-  '#f43f5e', // rose
-  '#f59e0b', // amber
-  '#10b981', // emerald
-  '#0ea5e9', // sky
-  '#6366f1', // indigo
+  '#3b82f6', // blue-500
+  '#10b981', // emerald-500
+  '#f59e0b', // amber-500
+  '#8b5cf6', // violet-500
+  '#f43f5e', // rose-500
+  '#06b6d4', // cyan-500
+  '#f97316', // orange-500
+  '#d946ef', // fuchsia-500
+  '#14b8a6', // teal-500
+  '#84cc16', // lime-500
+  '#6366f1', // indigo-500
+  '#ec4899', // pink-500
 ];
 
 export default function PopulationPieChart({ data }: Props) {
@@ -33,10 +37,10 @@ export default function PopulationPieChart({ data }: Props) {
     labels: data.map(item => item.date),
     datasets: [
       {
-        label: 'US Population',
+        label: 'Populasi AS',
         data: data.map(item => item.value),
-        backgroundColor: PIE_COLORS.slice(0, data.length),
-        borderColor: '#1e293b',
+        backgroundColor: data.map((_, i) => PIE_COLORS[i % PIE_COLORS.length]),
+        borderColor: '#ffffff',
         borderWidth: 2,
         hoverOffset: 4,
       },
@@ -48,20 +52,20 @@ export default function PopulationPieChart({ data }: Props) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right' as const,
+        position: 'bottom' as const,
         labels: {
-          color: '#f8fafc',
+          color: '#334155', // slate-700
           font: {
             family: "'Inter', sans-serif",
-            size: 13
+            size: 12
           },
-          padding: 20
+          padding: 12
         }
       },
       title: {
-        display: true,
-        text: 'Population Share by Year (Pie Chart)',
-        color: '#f8fafc',
+        display: false,
+        text: 'Proporsi Populasi per Tahun (Pie Chart)',
+        color: '#0f172a', // slate-900
         font: {
           family: "'Inter', sans-serif",
           size: 16,
@@ -72,10 +76,10 @@ export default function PopulationPieChart({ data }: Props) {
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(30, 41, 59, 0.9)',
+        backgroundColor: 'rgba(15, 23, 42, 0.9)', // slate-900
         titleColor: '#f8fafc',
         bodyColor: '#e2e8f0',
-        borderColor: '#334155',
+        borderColor: '#e2e8f0',
         borderWidth: 1,
         padding: 12,
         callbacks: {

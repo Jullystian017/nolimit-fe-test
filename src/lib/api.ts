@@ -6,7 +6,7 @@ export interface PopulationData {
 export async function fetchPopulationData(startYear: number, endYear: number): Promise<PopulationData[]> {
   try {
     const res = await fetch(
-      `https://api.worldbank.org/v2/country/US/indicator/SP.POP.TOTL?date=${startYear}:${endYear}&format=json`
+      `https://api.worldbank.org/v2/country/US/indicator/SP.POP.TOTL?date=${startYear}:${endYear}&format=json&per_page=100`
     );
     if (!res.ok) {
       throw new Error(`Failed to fetch population data: ${res.status}`);
